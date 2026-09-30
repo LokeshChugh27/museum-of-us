@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Museum of Us — Private Original</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#050505;
+  --bg2:#0a0a0a;
+  --card:#101010;
+  --white:#f5f5f5;
+  --muted:#8e8e8e;
+  --soft:#c9c9c9;
+  --line:rgba(255,255,255,.12);
+  --red:#e50914;
+  --red2:#ff2430;
+  --glass:rgba(255,255,255,.07);
+  --display:"Space Grotesk",Arial,sans-serif;
+  --body:"DM Sans",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--white);font-family:var(--body);overflow-x:hidden}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--red);color:#fff}
+button{font:inherit}
+a{text-decoration:none;color:inherit}
+
+#preloader{
+  position:fixed;inset:0;z-index:999;background:#000;display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s,visibility .8s;
+}
+#preloader.done{opacity:0;visibility:hidden}
+.loader-box{text-align:center;width:min(800px,88vw)}
+.loader-top{font-size:10px;letter-spacing:.23em;text-transform:uppercase;color:#777}
+.loader-logo{
+  margin:24px 0 34px;font:600 clamp(68px,14vw,180px)/.8 var(--display);
+  letter-spacing:-.08em;text-transform:uppercase;
+}
+.loader-logo span{display:inline-block;animation:loadRise .9s cubic-bezier(.2,.9,.2,1) both}
+.loader-logo span:nth-child(2){animation-delay:.06s}
+.loader-logo span:nth-child(3){animation-delay:.12s}
+.loader-logo span:nth-child(4){animation-delay:.18s}
+.loader-logo .red{color:var(--red)}
+@keyframes loadRise{from{opacity:0;transform:translateY(80px);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+.loader-line{height:1px;background:#242424;overflow:hidden}
+.loader-line i{display:block;height:100%;width:0;background:var(--red);animation:loadLine 1.8s ease forwards}
+@keyframes loadLine{to{width:100%}}
+.loader-note{margin-top:18px;color:#666;font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+
+.top{
+  position:fixed;top:0;left:0;right:0;z-index:80;height:68px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 24px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.96),rgba(0,0,0,.35),transparent);
+  transition:.35s;
+}
+.top.solid{background:rgba(5,5,5,.92);backdrop-filter:blur(16px)}
+.logo{font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+.logo span{color:var(--red)}
+.nav{display:flex;gap:27px;justify-content:center;font-size:11px;color:#a7a7a7}
+.nav a{transition:.2s}.nav a:hover{color:#fff}
+.status{justify-self:end;display:flex;align-items:center;gap:8px;font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.11em}
+.status:before{content:"";width:6px;height:6px;border-radius:50%;background:#4cd26a;box-shadow:0 0 14px #4cd26a}
+
+main{position:relative}
+section{position:relative}
+
+.hero{
+  min-height:100svh;display:flex;align-items:flex-end;padding:150px 5.5vw 70px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 78% 34%,rgba(229,9,20,.25),transparent 24%),
+    radial-gradient(circle at 52% 70%,rgba(255,255,255,.055),transparent 20%),
+    linear-gradient(110deg,#030303 0%,#080808 50%,#120304 100%);
+}
+.hero:before{
+  content:"";position:absolute;inset:0;opacity:.22;
+  background:
+    linear-gradient(90deg,transparent 0 60%,rgba(229,9,20,.18) 61%,transparent 63%),
+    linear-gradient(180deg,transparent 40%,#050505 100%);
+  transform:skewX(-8deg) scale(1.1);
+}
+.hero:after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 35% 55%,transparent 0 24%,rgba(0,0,0,.7) 65%);
+}
+.hero-wrap{position:relative;z-index:2;width:min(1400px,100%);margin:auto}
+.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8b8b8b}
+.eyebrow b{color:var(--red)}
+.hero-title{
+  font:600 clamp(82px,16vw,235px)/.76 var(--display);
+  letter-spacing:-.095em;text-transform:uppercase;margin:18px 0 28px;max-width:1180px;
+}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .word{
+  display:inline-block;transform:translateY(120%);filter:blur(8px);opacity:0;
+}
+body.ready .hero-title .word{animation:titleIn 1.15s cubic-bezier(.16,1,.3,1) forwards}
+body.ready .hero-title .line:nth-child(2) .word{animation-delay:.12s}
+body.ready .hero-title .line:nth-child(3) .word{animation-delay:.24s}
+@keyframes titleIn{to{transform:none;filter:none;opacity:1}}
+.hero-subrow{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:end;max-width:950px}
+.hero-desc{font-size:18px;line-height:1.42;color:#d0d0d0;max-width:560px;margin:0}
+.hero-side{font-size:11px;color:#777;line-height:1.5;text-transform:uppercase;letter-spacing:.1em}
+.ctas{display:flex;gap:9px;margin-top:25px}
+.btn{border:0;border-radius:4px;padding:12px 19px;font-size:12px;font-weight:700;cursor:pointer;transition:.25s}
+.btn.primary{background:#fff;color:#000}.btn.secondary{background:rgba(105,105,105,.55);color:#fff}
+.btn:hover{transform:translateY(-2px);filter:brightness(.92)}
+.scrollCue{position:absolute;right:5.5vw;bottom:31px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#666;writing-mode:vertical-rl}
+.scrollCue:after{content:"";display:block;width:1px;height:60px;background:#333;margin:12px auto 0}
+
+.appleSection{
+  min-height:100svh;padding:100px 5.5vw;background:#050505;display:grid;place-items:center;overflow:hidden
+}
+.appleInner{width:min(1200px,100%);text-align:center}
+.appleKicker{font-size:14px;color:#8f8f8f;margin-bottom:14px}
+.appleBig{
+  font:600 clamp(58px,10vw,150px)/.86 var(--display);letter-spacing:-.075em;margin:0 auto;
+  max-width:1000px;
+}
+.appleBig .gradient{
+  background:linear-gradient(90deg,#fff 10%,#bcbcbc 45%,#fff 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;background-size:180% auto;animation:shimmer 7s linear infinite
+}
+@keyframes shimmer{to{background-position:180% center}}
+.appleText{max-width:650px;font-size:20px;line-height:1.45;color:#8f8f8f;margin:25px auto 0}
+.glassRow{display:flex;gap:12px;margin-top:55px;justify-content:center;flex-wrap:wrap}
+.glass{
+  width:min(260px,28vw);min-width:180px;min-height:155px;padding:22px;text-align:left;border:1px solid rgba(255,255,255,.13);
+  border-radius:20px;background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.025));
+  box-shadow:inset 0 1px rgba(255,255,255,.1),0 30px 60px rgba(0,0,0,.25);backdrop-filter:blur(18px);
+  transform:translateY(25px);opacity:0;transition:1s cubic-bezier(.2,.8,.2,1)
+}
+.visible .glass{transform:none;opacity:1}
+.glass:nth-child(2){transition-delay:.1s}.glass:nth-child(3){transition-delay:.2s}.glass:nth-child(4){transition-delay:.3s}
+.glass small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666}
+.glass strong{display:block;margin-top:28px;font-size:22px;line-height:1.15;font-weight:500}
+
+.netflix{
+  min-height:92svh;padding:90px 5.5vw;background:#090909;overflow:hidden
+}
+.nfHead{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px;gap:30px}
+.nfTitle{font:600 clamp(44px,7vw,94px)/.82 var(--display);letter-spacing:-.06em}
+.nfMeta{max-width:310px;color:#777;font-size:13px;line-height:1.45}
+.cards{
+  display:flex;gap:12px;overflow-x:auto;padding:16px 3px 35px;scrollbar-width:none
+}
+.cards::-webkit-scrollbar{display:none}
+.card{
+  flex:0 0 clamp(220px,23vw,340px);aspect-ratio:2/2.9;border-radius:5px;position:relative;overflow:hidden;
+  background:#181818;cursor:pointer;transition:transform .35s,margin .35s,box-shadow .35s;
+  scroll-snap-align:start;
+}
+.card:hover{transform:scale(1.045) translateY(-9px);box-shadow:0 25px 60px rgba(0,0,0,.6);z-index:5}
+.cardBg{
+  position:absolute;inset:0;display:flex;align-items:flex-end;padding:20px;
+  background:
+    radial-gradient(circle at 70% 25%,rgba(229,9,20,.65),transparent 27%),
+    linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.02) 68%),
+    linear-gradient(140deg,#2c2c2c,#0d0d0d);
+}
+.card:nth-child(2) .cardBg{background:radial-gradient(circle at 30% 24%,rgba(229,9,20,.6),transparent 25%),linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.03) 68%),linear-gradient(140deg,#3b171a,#101010)}
+.card:nth-child(3) .cardBg{background:radial-gradient(circle at 72% 28%,rgba(255,255,255,.22),transparent 22%),linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.03) 68%),linear-gradient(140deg,#252525,#121212)}
+.card:nth-child(4) .cardBg{background:radial-gradient(circle at 38% 35%,rgba(229,9,20,.65),transparent 25%),linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.03) 68%),linear-gradient(140deg,#301014,#080808)}
+.card:nth-child(5) .cardBg{background:radial-gradient(circle at 55% 30%,rgba(255,255,255,.16),transparent 24%),linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.03) 68%),linear-gradient(140deg,#313131,#0c0c0c)}
+.mark{position:absolute;top:22px;left:20px;font:600 100px/.8 var(--display);color:#fff;opacity:.16}
+.cardInfo{position:relative;z-index:2}
+.cardKicker{font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:#aaa}
+.card h3{font:500 34px/.9 var(--display);margin:8px 0 6px;letter-spacing:-.04em;text-transform:uppercase}
+.card p{font-size:11px;color:#aaa;line-height:1.35;margin:0;max-width:230px}
+.nfBadge{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.nfBadge i{width:8px;height:8px;background:var(--red);border-radius:50%}
+
+.archive-modal{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:30px;background:rgba(0,0,0,.82);backdrop-filter:blur(18px);opacity:0;visibility:hidden;transition:.35s}
+.archive-modal.open{opacity:1;visibility:visible}
+.archive-modal-box{position:relative;width:min(820px,92vw);max-height:82vh;overflow:auto;padding:42px 44px 46px;background:linear-gradient(145deg,#151515,#090909);border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 100px rgba(0,0,0,.65);transform:translateY(30px) scale(.98);transition:.45s cubic-bezier(.16,1,.3,1)}
+.archive-modal.open .archive-modal-box{transform:none}
+.archive-modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border:1px solid rgba(255,255,255,.16);background:transparent;color:#aaa;cursor:pointer;border-radius:50%;font-size:16px}
+.archive-modal-close:hover{background:#fff;color:#000}
+.archive-modal-kicker{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.18em}
+.archive-modal-title{font:600 clamp(42px,7vw,78px)/.9 var(--display);letter-spacing:-.06em;text-transform:uppercase;margin:12px 0 25px}
+.archive-modal-rule{height:1px;background:#2a2a2a;margin-bottom:26px}
+.archive-modal-body{font-size:17px;line-height:1.75;color:#c9c9c9;white-space:pre-line;max-width:700px}
+.archive-modal-note{margin-top:30px;padding-top:18px;border-top:1px solid #252525;font-size:10px;line-height:1.6;color:#666;text-transform:uppercase;letter-spacing:.12em}
+.cardRead{display:inline-flex;align-items:center;gap:7px;margin-top:15px;padding:9px 11px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#fff;font-size:9px;letter-spacing:.14em;text-transform:uppercase;border-radius:3px;opacity:.82;transition:.2s}
+.card:hover .cardRead{background:#fff;color:#000;opacity:1}
+@media(max-width:650px){.archive-modal{padding:15px}.archive-modal-box{padding:34px 22px 30px}.archive-modal-body{font-size:15px}}
+
+.hki{
+  min-height:100svh;padding:0;background:#161616;overflow:hidden;display:grid;place-items:center;
+}
+.hkiVisual{position:absolute;inset:0;overflow:hidden}
+.orb{position:absolute;width:42vw;height:42vw;border-radius:50%;background:radial-gradient(circle,#e50914 0%,rgba(229,9,20,.35) 25%,transparent 66%);filter:blur(5px);mix-blend-mode:screen;transition:transform .15s ease-out}
+.orb.one{left:5%;top:-10%}.orb.two{right:-12%;bottom:-12%;transform:scale(.7);opacity:.7}
+.hkiGrid{
+  position:absolute;inset:-20%;opacity:.18;
+  background:linear-gradient(transparent 98%,#fff 98%),linear-gradient(90deg,transparent 98%,#fff 98%);
+  background-size:70px 70px;transform:perspective(600px) rotateX(55deg) rotateZ(-10deg) scale(1.4);transform-origin:center bottom;
+}
+.hkiContent{position:relative;z-index:3;width:min(1400px,88vw);text-align:center}
+.hkiTiny{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#bababa}
+.hkiTitle{
+  font:600 clamp(86px,18vw,270px)/.72 var(--display);letter-spacing:-.1em;text-transform:uppercase;
+  margin:24px 0;transform:scaleY(1.15)
+}
+.hkiTitle .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.55)}
+.hkiNote{max-width:620px;margin:auto;font-size:16px;color:#c2c2c2;line-height:1.45}
+.hkiButton{margin-top:30px;border:1px solid rgba(255,255,255,.35);background:transparent;color:white;border-radius:99px;padding:13px 20px;font-size:10px;text-transform:uppercase;letter-spacing:.14em;cursor:pointer}
+.hkiButton:hover{background:#fff;color:#111}
+.hkiLabel{position:absolute;bottom:28px;left:28px;font-size:9px;color:#777;letter-spacing:.16em;text-transform:uppercase}
+.hkiLabel.right{left:auto;right:28px}
+
+.voice{
+  min-height:95svh;padding:95px 5.5vw;background:#f1f1f1;color:#0a0a0a;
+}
+.voice .eyebrow{color:#666}.voiceWrap{width:min(1300px,100%);margin:auto}
+.voiceHead{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:end}
+.voiceTitle{font:600 clamp(60px,10vw,145px)/.8 var(--display);letter-spacing:-.085em}
+.voiceDesc{font-size:17px;line-height:1.4;color:#5f5f5f;max-width:430px}
+.voiceCards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:55px}
+.vcard{
+  background:#fff;border-radius:22px;min-height:275px;padding:27px;display:flex;flex-direction:column;justify-content:space-between;
+  box-shadow:0 22px 55px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.06)
+}
+.vtop{display:flex;justify-content:space-between;gap:15px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#777}
+.vquote{font:500 clamp(28px,3.5vw,50px)/.95 var(--display);letter-spacing:-.05em;max-width:600px}
+.player{display:flex;align-items:center;gap:12px}
+.play{
+  width:42px;height:42px;border:0;border-radius:50%;background:#0a0a0a;color:#fff;cursor:pointer;font-size:12px
+}
+.wave{height:48px;flex:1;display:flex;align-items:center;gap:3px}
+.wave span{width:3px;border-radius:4px;background:#aaa;transition:.15s;height:var(--h)}
+.vtime{font-size:10px;color:#888}
+.uploadNote{margin-top:16px;font-size:11px;color:#777}
+input[type=file]{display:none}
+.fileBtn{cursor:pointer;color:#111;text-decoration:underline}
+
+.final{
+  min-height:100svh;display:grid;place-items:center;text-align:center;padding:100px 6vw;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(229,9,20,.22),transparent 22%),
+    #050505;
+}
+.finalWrap{width:min(1150px,100%)}
+.finalKicker{font-size:10px;color:#777;letter-spacing:.2em;text-transform:uppercase}
+.finalTitle{font:600 clamp(82px,17vw,230px)/.74 var(--display);letter-spacing:-.095em;text-transform:uppercase;margin:23px 0}
+.finalTitle .red{color:var(--red)}
+.finalText{font-size:20px;line-height:1.4;color:#aaa;max-width:760px;margin:auto}
+.finalMark{
+  display:inline-flex;gap:12px;align-items:center;margin-top:42px;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#aaa
+}
+.finalMark:before{content:"";width:55px;height:1px;background:var(--red)}
+
+footer{padding:25px 5.5vw;border-top:1px solid #222;display:flex;justify-content:space-between;color:#5f5f5f;font-size:9px;letter-spacing:.15em;text-transform:uppercase}
+
+.reveal{opacity:0;transform:translateY(48px);filter:blur(5px);transition:opacity 1s,transform 1s,filter 1s cubic-bezier(.16,1,.3,1)}
+.reveal.show{opacity:1;transform:none;filter:none}
+
+
+/* --- Story expansion --- */
+.storySection{min-height:100svh;padding:110px 5.5vw;background:#080808;overflow:hidden;display:flex;align-items:center}
+.storyInner{width:min(1250px,100%);margin:auto}
+.storyGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:80px;align-items:center}
+.storyKicker{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#777;margin-bottom:18px}
+.storyKicker b{color:var(--red)}
+.storyTitle{font:600 clamp(62px,9vw,138px)/.82 var(--display);letter-spacing:-.08em;text-transform:uppercase;margin:0 0 28px}
+.storyLead{font-size:23px;line-height:1.5;color:#d6d6d6;max-width:680px}
+.storyBody{font-size:16px;line-height:1.8;color:#999;max-width:650px}
+.storyQuote{margin:30px 0 0;padding-left:22px;border-left:2px solid var(--red);font:500 clamp(24px,3vw,42px)/1.1 var(--display);letter-spacing:-.04em;max-width:650px}
+.originCard{padding:32px;background:linear-gradient(145deg,#141414,#090909);border:1px solid rgba(255,255,255,.10);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.45);position:relative;overflow:hidden}
+.originCard:before{content:'';position:absolute;width:250px;height:250px;right:-90px;top:-90px;background:radial-gradient(circle,rgba(229,9,20,.28),transparent 65%)}
+.originTop{display:flex;justify-content:space-between;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#666;margin-bottom:35px}
+.originText{font:400 clamp(25px,3.1vw,44px)/1.22 var(--display);letter-spacing:-.045em;max-width:650px;position:relative;z-index:2}
+.originText em{color:#777;font-style:normal}
+.microLine{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:35px}
+.microItem{padding:18px 0;border-top:1px solid #262626}.microItem small{display:block;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin-bottom:9px}.microItem strong{font-size:12px;font-weight:500;color:#bbb;line-height:1.45}
+
+.memorySection{min-height:100svh;padding:110px 5.5vw;background:#0b0b0b}
+.memoryHead{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:40px}
+.memoryIntro{max-width:360px;color:#777;font-size:13px;line-height:1.5}
+.memoryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.memoryTile{min-height:330px;padding:24px;background:#111;border:1px solid #242424;position:relative;overflow:hidden;transition:.35s;display:flex;flex-direction:column;justify-content:space-between}
+.memoryTile:hover{transform:translateY(-8px);border-color:#4a4a4a;box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.memoryTile:after{content:'';position:absolute;inset:auto -25% -35% auto;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(229,9,20,.20),transparent 68%);pointer-events:none}
+.memoryNum{font:600 72px/.8 var(--display);color:#262626;letter-spacing:-.07em}
+.memoryLabel{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#777}
+.memoryTile h3{font:500 clamp(28px,3vw,43px)/.94 var(--display);letter-spacing:-.055em;margin:12px 0}
+.memoryTile p{font-size:13px;line-height:1.65;color:#999;margin:0;max-width:300px}
+.memoryMeta{display:flex;justify-content:space-between;gap:10px;margin-top:22px;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#555}
+
+.unknownSection{min-height:100svh;padding:110px 5.5vw;background:#f1f1f1;color:#090909;display:flex;align-items:center}
+.unknownGrid{width:min(1250px,100%);margin:auto;display:grid;grid-template-columns:.7fr 1.3fr;gap:70px;align-items:start}
+.unknownTitle{font:600 clamp(60px,9vw,135px)/.78 var(--display);letter-spacing:-.09em;text-transform:uppercase;margin:0}
+.unknownIntro{font-size:18px;color:#5f5f5f;line-height:1.55;margin-top:24px;max-width:380px}
+.unknownCards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.unknownCard{background:#fff;border-radius:18px;min-height:235px;padding:25px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(0,0,0,.06);box-shadow:0 22px 50px rgba(0,0,0,.06);transition:.35s}
+.unknownCard:hover{transform:translateY(-6px) rotate(-.5deg)}
+.unknownCard .tag{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#8b8b8b}
+.unknownCard p{font:500 clamp(23px,2.7vw,38px)/1.02 var(--display);letter-spacing:-.045em;margin:28px 0 0}
+.unknownCard.redCard{background:#0a0a0a;color:white}
+.unknownCard.redCard .tag{color:#777}.unknownCard.redCard p{color:#fff}
+.revealBtn{border:0;background:none;padding:0;margin-top:15px;text-decoration:underline;cursor:pointer;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666;text-align:left}
+.hiddenLine{display:none;margin-top:14px;font:400 13px/1.5 var(--body);color:#777}.unknownCard.redCard .hiddenLine{color:#aaa}.hiddenLine.show{display:block}
+
+.ordinarySection{min-height:100svh;padding:110px 5.5vw;background:#050505;display:flex;align-items:center}
+.ordinaryGrid{width:min(1220px,100%);margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.ordinaryTitle{font:600 clamp(58px,8vw,125px)/.8 var(--display);letter-spacing:-.085em;text-transform:uppercase;margin:0}
+.ordinaryText{font-size:18px;color:#999;line-height:1.75;max-width:520px}
+.artifactList{margin-top:35px;border-top:1px solid #222}
+.artifactLine{display:grid;grid-template-columns:115px 1fr auto;gap:18px;padding:18px 0;border-bottom:1px solid #222;align-items:center}
+.artifactLine time{font-size:9px;letter-spacing:.12em;color:#666}.artifactLine strong{font-size:15px;font-weight:500}.artifactLine span{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#555}
+
+.futureNote{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-top:30px}
+
+@media(max-width:850px){
+  .storyGrid,.unknownGrid,.ordinaryGrid{grid-template-columns:1fr;gap:35px}
+  .memoryGrid{grid-template-columns:1fr}
+  .memoryHead{display:block}.memoryIntro{margin-top:18px}
+  .unknownCards{grid-template-columns:1fr}
+  .microLine{grid-template-columns:1fr}
+  .artifactLine{grid-template-columns:85px 1fr}.artifactLine span{display:none}
+}
+
+@media(max-width:850px){
+  .top{grid-template-columns:1fr auto;height:62px;padding:0 17px}.nav{display:none}
+  .hero{padding:125px 19px 55px}.hero-subrow,.voiceHead,.voiceCards{grid-template-columns:1fr;gap:25px}
+  .hero-title{font-size:23vw}.hero-desc{font-size:16px}
+  .appleSection{padding:80px 19px}.appleBig{font-size:16vw}.appleText{font-size:17px}.glass{width:47%;min-width:0}
+  .netflix{padding:75px 19px}.nfHead{display:block}.nfMeta{margin-top:16px}
+  .card{flex-basis:58vw}.hkiTitle{font-size:24vw}.hkiContent{width:92vw}
+  .voice{padding:80px 19px}.voiceTitle{font-size:20vw}.vcard{min-height:250px}
+  .final{padding:90px 20px}.finalTitle{font-size:24vw}
+  footer{flex-direction:column;gap:12px}
+}
+
+.modal-open{overflow:hidden}
+.private-modal{position:fixed;inset:0;z-index:320;display:grid;place-items:center;padding:24px;opacity:0;visibility:hidden;pointer-events:none;transition:.3s}
+.private-modal.open{opacity:1;visibility:visible;pointer-events:auto}
+.private-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(14px)}
+.private-modal-box{position:relative;z-index:1;width:min(720px,92vw);max-height:78vh;overflow:auto;padding:38px 40px 42px;background:#0b0b0b;color:#fff;border:1px solid rgba(255,255,255,.14);box-shadow:0 35px 100px rgba(0,0,0,.6);transform:translateY(24px) scale(.98);transition:.4s cubic-bezier(.16,1,.3,1)}
+.private-modal.open .private-modal-box{transform:none}
+.private-modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid rgba(255,255,255,.16);background:transparent;color:#999;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;transition:.2s}
+.private-modal-close:hover{background:#fff;color:#000}
+.private-modal-kicker{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#666}
+.private-modal-title{font:600 clamp(36px,5vw,58px)/.9 var(--display);letter-spacing:-.06em;text-transform:uppercase;margin:14px 0 24px}
+.private-modal-rule{height:1px;background:#262626;margin-bottom:24px}
+.private-modal-body{font-size:16px;line-height:1.8;color:#bdbdbd;white-space:pre-line;margin:0;max-width:620px}
+.unknownCard .revealBtn{display:inline-block;margin-top:18px;color:#8a8a8a}
+.unknownCard .revealBtn:hover{color:#090909}
+.unknownCard.redCard .revealBtn:hover{color:#fff}
+@media(max-width:650px){.private-modal{padding:15px}.private-modal-box{padding:32px 22px 28px}.private-modal-body{font-size:15px;line-height:1.7}}
+</style>
+<style>
+.card{position:relative}
+.card a.cardLink{position:absolute;inset:0;z-index:5;text-decoration:none}
+.cardRead{margin-top:2px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#fff;float:right}
+.chapter{min-height:100svh;padding:115px 5.5vw;background:#070707;display:flex;align-items:center}
+.chapter.alt{background:#0b0b0b}
+.chapter.white{background:#f1f1f1;color:#090909}
+.chapterInner{width:min(1280px,100%);margin:auto}
+.chapterGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.chapterKicker{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#777;margin-bottom:18px}.chapterKicker b{color:var(--red)}
+.chapterTitle{font:600 clamp(60px,9vw,145px)/.8 var(--display);letter-spacing:-.09em;text-transform:uppercase;margin:0 0 28px}
+.chapterLead{font-size:20px;line-height:1.55;color:#bdbdbd;max-width:620px}
+.chapter.white .chapterLead{color:#5f5f5f}
+.chapterCopy{font-size:16px;line-height:1.8;color:#8f8f8f;max-width:620px;white-space:pre-line}.chapter.white .chapterCopy{color:#606060}
+.chapterQuote{font:500 clamp(28px,4vw,52px)/.98 var(--display);letter-spacing:-.055em;max-width:680px;margin-top:34px}
+.mediaStack{display:grid;gap:12px}
+.mediaFrame{position:relative;min-height:420px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,#2b2b2b,#0d0d0d);overflow:hidden}
+.chapter.white .mediaFrame{background:linear-gradient(145deg,#ddd,#fafafa);border-color:rgba(0,0,0,.12)}
+.mediaFrame img{width:100%;height:100%;min-height:420px;object-fit:cover;display:block}
+.mediaFrame img[src=""],.mediaFrame img:not([src]){display:none}
+.mediaPlaceholder{position:absolute;inset:15px;border:1px dashed rgba(255,255,255,.22);display:grid;place-items:center;text-align:center;color:#777;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:20px}
+.chapter.white .mediaPlaceholder{border-color:rgba(0,0,0,.16);color:#888}
+.mediaTag{position:absolute;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#8d8d8d;z-index:2}
+.mediaNote{font-size:9px;color:#666;line-height:1.5;letter-spacing:.08em;text-transform:uppercase}
+.dualQuote{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.quoteBox{padding:22px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+.quoteBox strong{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#777;margin-bottom:12px}
+.quoteBox p{margin:0;font-size:16px;line-height:1.6;color:#b9b9b9}
+.archiveIntro{font-size:18px;line-height:1.6;color:#858585;max-width:650px}
+.storyRule{height:1px;background:rgba(255,255,255,.1);margin:32px 0}
+.audioFrame{background:#fff;border-radius:22px;padding:24px;min-height:420px;color:#111;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 25px 60px rgba(0,0,0,.08)}
+.audioMeta{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#777}
+.audioTitle{font:500 clamp(32px,4vw,58px)/.95 var(--display);letter-spacing:-.05em}
+.audioFrame audio{width:100%;margin-top:20px}
+.audioHint{font-size:10px;line-height:1.5;color:#777}
+.futureGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:38px}
+.futureCard{min-height:190px;padding:22px;border:1px solid rgba(255,255,255,.13);background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:18px;display:flex;flex-direction:column;justify-content:space-between}
+.futureCard small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#666}.futureCard strong{font-size:22px;font-weight:500;line-height:1.1}
+@media(max-width:850px){
+  .chapterGrid{grid-template-columns:1fr;gap:35px}.chapter{padding:85px 19px}.mediaFrame,.mediaFrame img{min-height:330px}.dualQuote{grid-template-columns:1fr}.futureGrid{grid-template-columns:1fr 1fr}.archiveIntro{font-size:16px}
+}
+@media(max-width:540px){.futureGrid{grid-template-columns:1fr}.card{flex-basis:70vw}}
+
+<style>
+/* Origin conversation exhibit */
+.originChat{margin-top:34px;padding:22px;background:linear-gradient(145deg,#111,#080808);border:1px solid rgba(255,255,255,.11);border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,.35)}
+.originChatHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#666}
+.chatThread{display:flex;flex-direction:column;gap:10px;max-height:410px;overflow:auto;padding-right:4px}
+.chatMsg{max-width:84%;padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.5;position:relative}
+.chatMsg.him{align-self:flex-end;background:#262626;color:#f1f1f1;border-bottom-right-radius:4px}
+.chatMsg.her{align-self:flex-start;background:#f1f1f1;color:#111;border-bottom-left-radius:4px}
+.chatWho{display:block;font-size:8px;letter-spacing:.13em;text-transform:uppercase;opacity:.55;margin-bottom:4px}
+.chatTime{display:block;margin-top:5px;font-size:8px;color:#777;letter-spacing:.08em}
+.chatMsg.him .chatTime{color:#888}.chatMsg.her .chatTime{color:#777}
+.originPunchline{margin-top:18px;padding-top:18px;border-top:1px solid #242424;font-size:12px;line-height:1.6;color:#8f8f8f}
+.chatMore{align-self:center;padding:4px 10px;color:#555;font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:850px){.originChat{margin-top:10px}.chatMsg{max-width:92%}}
+
+/* Birthday photo exhibit + letter */
+.birthdaySection{min-height:100svh;padding:110px 5.5vw 95px;background:#070707;display:flex;align-items:center;overflow:hidden}
+.birthdayInner{width:min(1320px,100%);margin:auto;position:relative}
+.birthdayKicker{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#777;margin-bottom:24px}.birthdayKicker b{color:var(--red)}
+.birthdayGallery{display:grid;grid-template-columns:1.05fr .75fr 1.2fr;grid-template-rows:260px 260px;gap:12px;min-height:532px}
+.birthdayPhoto{position:relative;overflow:hidden;background:linear-gradient(145deg,#242424,#0d0d0d);border:1px solid rgba(255,255,255,.1);min-height:0}
+.birthdayPhoto.tall{grid-row:span 2}
+.birthdayPhoto.wide{grid-column:span 1}
+.birthdayPhoto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1);filter:saturate(.92)}
+.birthdayPhoto:hover img{transform:scale(1.045)}
+.birthdayPhoto.missing:after{content:'REPLACE WITH YOUR PHOTO';position:absolute;inset:15px;border:1px dashed rgba(255,255,255,.2);display:grid;place-items:center;color:#666;font-size:9px;letter-spacing:.15em;text-transform:uppercase}
+.birthdayEnvelope{position:absolute;right:7%;bottom:-34px;width:150px;height:106px;border:0;background:transparent;padding:0;cursor:pointer;filter:drop-shadow(0 24px 35px rgba(0,0,0,.6));transform:rotate(-2deg);transition:transform .35s cubic-bezier(.16,1,.3,1),filter .35s}
+.birthdayEnvelope:hover{transform:rotate(1deg) translateY(-7px) scale(1.04);filter:drop-shadow(0 30px 50px rgba(0,0,0,.72))}
+.envelopeBody{position:absolute;inset:12px 0 0;background:linear-gradient(145deg,#f2f2f2,#cfcfcf);border-radius:7px;box-shadow:0 1px 0 rgba(255,255,255,.4) inset}
+.envelopeBody:before,.envelopeBody:after{content:'';position:absolute;bottom:0;width:74px;height:1px;background:#aaa;transform-origin:left bottom}
+.envelopeBody:before{left:0;transform:rotate(31deg)}
+.envelopeBody:after{right:0;transform-origin:right bottom;transform:rotate(-31deg)}
+.envelopeFlap{position:absolute;left:7px;right:7px;top:12px;height:65px;background:linear-gradient(145deg,#fafafa,#d9d9d9);clip-path:polygon(0 0,100% 0,50% 64%);z-index:2;filter:drop-shadow(0 2px 1px rgba(0,0,0,.09))}
+.envelopeSeal{position:absolute;z-index:3;left:50%;top:51px;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#101010;color:#fff;font-size:13px;border:2px solid rgba(255,255,255,.85);box-shadow:0 5px 12px rgba(0,0,0,.3)}
+.envelopeGlow{position:absolute;width:120px;height:50px;left:15px;top:34px;background:radial-gradient(ellipse,rgba(229,9,20,.18),transparent 70%);filter:blur(9px);z-index:0}
+.birthday-modal{position:fixed;inset:0;z-index:360;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;pointer-events:none;transition:.35s}
+.birthday-modal.open{opacity:1;visibility:visible;pointer-events:auto}
+.birthday-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.84);backdrop-filter:blur(18px)}
+.birthday-letter{position:relative;z-index:1;width:min(760px,92vw);max-height:82vh;overflow:auto;padding:58px 52px 52px;background:linear-gradient(150deg,#f4f2ed,#d8d6d0);color:#111;border-radius:8px;box-shadow:0 45px 110px rgba(0,0,0,.7);transform:translateY(36px) scale(.965) rotate(.3deg);transition:.5s cubic-bezier(.16,1,.3,1)}
+.birthday-modal.open .birthday-letter{transform:none}
+.birthday-letter:before{content:'';position:absolute;inset:12px;border:1px solid rgba(0,0,0,.1);pointer-events:none}
+.birthday-modal-close{position:absolute;right:18px;top:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(0,0,0,.16);background:transparent;color:#444;cursor:pointer;font-size:20px;z-index:3}
+.birthday-modal-close:hover{background:#111;color:#fff}
+.birthday-letter-kicker{position:relative;font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#777}
+.birthday-letter-title{position:relative;font:600 clamp(46px,7vw,82px)/.88 var(--display);letter-spacing:-.065em;text-transform:uppercase;margin:18px 0 28px}
+.birthday-letter-title span{font-style:italic;font-weight:500;text-transform:none;letter-spacing:-.04em}
+.birthday-letter-rule{position:relative;height:1px;background:rgba(0,0,0,.16);margin-bottom:28px}
+.birthday-letter-body{position:relative;min-height:230px;font:400 18px/1.8 var(--body);color:#343434;white-space:pre-line}
+@media(max-width:850px){.birthdaySection{padding:85px 19px 110px}.birthdayGallery{grid-template-columns:1fr 1fr;grid-template-rows:220px 220px 220px;min-height:0}.birthdayPhoto.tall{grid-row:span 2}.birthdayPhoto.wide{grid-column:span 2}.birthdayEnvelope{right:6%;bottom:-28px;width:130px;height:92px}.envelopeSeal{top:45px}}
+@media(max-width:540px){.birthdayGallery{grid-template-columns:1fr 1fr;grid-template-rows:180px 180px 180px}.birthdayLetter{padding:48px 25px 35px}.birthday-letter-body{font-size:16px;line-height:1.7}}
+</style>
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <div class="loader-box">
+    <div class="loader-top">A private original · loading the archive</div>
+    <div class="loader-logo"><span>MUSEUM</span><br><span>OF </span><span class="red">US</span></div>
+    <div class="loader-line"><i></i></div>
+    <div class="loader-note">For one person only</div>
+  </div>
+</div>
+
+<header class="top" id="topbar">
+  <div class="logo"><span>M</span> / US</div>
+  <nav class="nav">
+    <a href="#archive">Archive</a>
+    <a href="#origin">Beginning</a>
+    <a href="#little-things">Little Things</a>
+    <a href="#unknown">Unsaid</a>
+    <a href="#voices">Voices</a>
+    <a href="#final">Finale</a>
+  </nav>
+  <div class="status">Private collection</div>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+  <div class="hero-wrap">
+    <div class="eyebrow"><b>A private original</b> · a story about us</div>
+    <h1 class="hero-title">
+      <span class="line"><span class="word">THE</span></span>
+      <span class="line"><span class="word">MUSEUM</span></span>
+      <span class="line"><span class="word">OF US</span></span>
+    </h1>
+    <div class="hero-subrow">
+      <p class="hero-desc">A digital archive of two people in different countries, built from conversations, voice notes, tiny memories and all the chapters still waiting.</p>
+      <div class="hero-side">Season 01<br>Two countries<br>Never met in person<br>Still collecting</div>
+    </div>
+    <div class="ctas">
+      <a class="btn primary" href="#archive">▶ Enter the museum</a>
+      <a class="btn secondary" href="#voices">♫ Hear the archive</a>
+    </div>
+  </div>
+  <div class="scrollCue">Scroll to explore</div>
+</section>
+
+<section class="appleSection reveal" id="statement">
+  <div class="appleInner">
+    <div class="appleKicker">Some stories don't need a first meeting to begin.</div>
+    <h2 class="appleBig">The distance is real.<br><span class="gradient">So is the connection.</span></h2>
+    <p class="appleText">This isn't a museum of places we've already been. It's a museum of everything that happened before we ever got to meet.</p>
+    <div class="glassRow">
+      <div class="glass"><small>Artifact 001</small><strong>Messages that became a habit.</strong></div>
+      <div class="glass"><small>Artifact 002</small><strong>Voice notes that made distance smaller.</strong></div>
+      <div class="glass"><small>Artifact 003</small><strong>Details I somehow remember.</strong></div>
+      <div class="glass"><small>Artifact 004</small><strong>A future that hasn't happened yet.</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="netflix" id="archive">
+  <div class="nfHead reveal">
+    <div>
+      <div class="eyebrow">Continue watching · The archive</div>
+      <div class="nfTitle">OUR STORY</div>
+    </div>
+    <div class="nfMeta">This is the story in episodes: how one impossible-looking night became our beginning, how you became my person, how the tiny things stayed, and how the unfinished chapters are still waiting.</div>
+  </div>
+  <div class="cards">
+    <article class="card reveal"><a class="cardLink" href="#origin" aria-label="Read The Beginning"></a><div class="cardBg"><div class="mark">01</div><div class="cardInfo"><div class="cardKicker">Episode 01</div><h3>The Beginning</h3><p>How an ordinary beginning quietly became important.</p><div class="nfBadge"><i></i> Origin story</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#why-you" aria-label="Read Why You"></a><div class="cardBg"><div class="mark">02</div><div class="cardInfo"><div class="cardKicker">Episode 02</div><h3>Why You</h3><p>The reasons it became you, little by little.</p><div class="nfBadge"><i></i> Personal</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#little-things" aria-label="Read The Little Things"></a><div class="cardBg"><div class="mark">03</div><div class="cardInfo"><div class="cardKicker">Episode 03</div><h3>The Little Things</h3><p>The details you probably never knew I kept.</p><div class="nfBadge"><i></i> Observed</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#unknown" aria-label="Read She Doesn't Know"></a><div class="cardBg"><div class="mark">04</div><div class="cardInfo"><div class="cardKicker">Episode 04</div><h3>She Doesn't Know</h3><p>The things I notice but don't always say.</p><div class="nfBadge"><i></i> Private</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#ordinary" aria-label="Read Ordinary Days"></a><div class="cardBg"><div class="mark">05</div><div class="cardInfo"><div class="cardKicker">Episode 05</div><h3>Ordinary Days</h3><p>How you became part of days that used to be ordinary.</p><div class="nfBadge"><i></i> Everyday</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#distance" aria-label="Read Two Countries"></a><div class="cardBg"><div class="mark">06</div><div class="cardInfo"><div class="cardKicker">Episode 06</div><h3>Two Countries</h3><p>Different coordinates. Same story.</p><div class="nfBadge"><i></i> Ongoing</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#voices" aria-label="Read The Voices"></a><div class="cardBg"><div class="mark">07</div><div class="cardInfo"><div class="cardKicker">Episode 07</div><h3>The Voices</h3><p>Some memories don't belong in photographs.</p><div class="nfBadge"><i></i> Audio</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal"><a class="cardLink" href="#not-yet" aria-label="Read Not Yet"></a><div class="cardBg"><div class="mark">08</div><div class="cardInfo"><div class="cardKicker">Episode 08</div><h3>Not Yet</h3><p>The chapters that are still waiting to happen.</p><div class="nfBadge"><i></i> Coming later</div><div class="cardRead">Read the exhibit →</div></div></div></article>
+    <article class="card reveal birthdayArchiveCard"><a class="cardLink" href="#birthday" aria-label="Read The Portrait Room"></a><div class="cardBg"><div class="mark">09</div><div class="cardInfo"><div class="cardKicker">Episode 09</div><h3>The Portrait Room</h3><p>A quiet room in the museum, filled with only you.</p><div class="nfBadge"><i></i> Portraits</div><div class="cardRead">Open the exhibit →</div></div></div></article>
+  </div>
+</section>
+
+<section class="chapter" id="origin">
+  <div class="chapterInner">
+    <div class="chapterGrid">
+      <div class="reveal">
+        <div class="chapterKicker"><b>Exhibit 01</b> · The origin story</div>
+        <h2 class="chapterTitle">A random night.<br>A little bit of magic.</h2>
+        <p class="chapterLead">On a random night, completely out of nowhere, we met — talked without knowing or even thinking it would ever come this far.</p>
+        <p class="chapterCopy">Out of millions and millions of people, somehow I met you. How odd is that? What were the chances?
+
+I didn't even know there was a whole group of people behind that night or how any of it would unfold. The conversation just started — so easy, so exciting, so completely different from what I expected to find there that night. We talked and talked.
+
+Somehow, you saw through me without really knowing me, without ever meeting me. We stayed there much longer than we intended, and honestly, I didn't want to stop talking to you.
+
+The whole night was full of surprises. How we started. How, out of so many people, I ended up meeting you. How I somehow shared more with you than I probably should have. And how, after all of that, we somehow ended up adding each other on Instagram.
+
+I still think about how strange and beautiful that is. Out of all those millions of people, I bumped into one of the best people I've ever met — or, at least so far, the best person I've ever met.
+
+And for me, that night felt magical.</p>
+        <div class="chapterQuote">“Out of millions and millions of people, somehow, I met you.”</div>
+      </div>
+      <div class="mediaStack reveal">
+        <div class="mediaFrame"><div class="mediaTag"><span>Artifact 001</span><span>Omegle / May 24, 2021</span></div><div class="mediaPlaceholder">REPLACE WITH YOUR IMAGE<br><small>media/our-image.jpg</small></div><img src="media/our-image.jpg" alt="Memory from the beginning" onerror="this.style.display='none'"></div>
+        <div class="originChat reveal">
+          <div class="originChatHead"><span>The first exchange</span><span>Artifact 001-B · May 24, 2021</span></div>
+          <div class="chatThread">
+            <div class="chatMsg him"><span class="chatWho">Him</span>Hello 👋</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Hii 😊😊</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Knock knock</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Who s there? Hahahah</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Did you forget me. Open the door i am here to refuse you to america 🇺🇸. We will live there 😅</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Thank God someone wants to take me there hahahah</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Ofc i remember you</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Come we will go from this place. And visit america.</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>We will live there happily and go to Disneyland if u like 😊</div>
+          </div>
+          <div class="originPunchline">Somewhere inside a completely ordinary conversation, there was already a tiny version of the story we would eventually become.</div>
+        </div>
+        <div class="mediaNote">EDIT HERE · Replace the sample date and image path. The same image can be reused anywhere in the museum.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter alt" id="why-you">
+  <div class="chapterInner">
+    <div class="chapterGrid">
+      <div class="reveal">
+        <div class="chapterKicker"><b>Exhibit 02</b> · Why you</div>
+        <h2 class="chapterTitle">Oh, where do I start?<br>It wasn't one reason.</h2>
+        <p class="chapterLead">There are so many little reasons and moments that made you so special to me — so many that, without me even realizing it, I started missing you, started loving you, and somehow you became a part of me and my favorite person.</p>
+        <p class="chapterCopy">But from the very beginning, you stood out from everyone I had ever met.
+
+A random conversation on a random night that could have ended after a few minutes and never meant anything.
+
+But it didn't.
+
+We kept talking.
+
+And somewhere between the jokes, the random conversations, and the hours passing without us noticing, you stopped feeling like a stranger.
+
+The way talking to you started feeling easy. The way I began looking forward to your messages. The way a conversation could start with something completely random — just pure jibber-jabber — and end with me wishing it wasn't over.
+
+I don't think I ever sat down and decided, “This is why I like her.” I think I just kept finding more reasons to choose you without realizing I was doing it. Falling more and more in love with you each and every day, whether we are talking or not.
+
+With time, you started to feel like home to me. Coming to you makes me forget everything for a while. You give me this different, weird kind of comfort and peace.
+
+You light up my day just by being in it, and you light up my world by being part of it.
+
+It's like before meeting you, my world was all black and white — dark and gray. Then you put all the color into it with your cute smile, perfect cheekbones, and those green, color-changing, magical eyes.</p>
+        <div class="dualQuote">
+          <div class="quoteBox"><strong>Your voice</strong><p>Somehow, hearing you lights me up, makes me so happy and excited, and leaves me thinking about how I will ever be able to resist you when we're finally together in person — because I already know I'm going to want to stop you and kiss you every time. Hehe.</p></div>
+          <div class="quoteBox"><strong>Your randomness</strong><p>You can send me something completely unnecessary and still make me want to know the story behind it. Or send me pictures — when you do your tattoo, when you change your hair, or just little moments from your day — and somehow I always want to see more.</p></div>
+        </div>
+      </div>
+      <div class="mediaStack reveal">
+        <div class="mediaFrame"><div class="mediaTag"><span>Artifact 002</span><span>Personal reasons</span></div><div class="mediaPlaceholder">REPLACE WITH YOUR IMAGE<br><small>media/our-image.jpg</small></div><img src="media/our-image.jpg" alt="Personal memory" onerror="this.style.display='none'"></div>
+        <div class="originChat reveal">
+          <div class="originChatHead"><span>One of the conversations I kept</span><span>Artifact 002-B · Jun 17, 2021</span></div>
+          <div class="chatThread">
+            <div class="chatMsg her"><span class="chatWho">Her</span>Hello 😊😊</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Hello miss😊🤗🤗</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Glad you text me for the first time 😅</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>I miss you thats why hehe</div>
+            <div class="chatMore">Some more texts..</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>How is it your day going</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Is everything ok?</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Fine</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>I am just missing you and and missing to go out</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Awww</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>I miss you too</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>When you come to serbia we will go out and hang out all night long</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Dont worry</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>Hope that day come soon</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>It will 😘😘😘</div>
+            <div class="chatMsg him"><span class="chatWho">Him</span>i am so excited to meet you</div>
+            <div class="chatMsg her"><span class="chatWho">Her</span>Im excited too</div>
+          </div>
+          <div class="originPunchline">A small conversation, but one I still remember because it already sounded like two people who were waiting for the same future.</div>
+        </div>
+        <div class="mediaNote">EDIT HERE · Replace the sample image path when you're ready. The same image can be reused anywhere in the museum.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="memorySection" id="little-things">
+  <div class="storyInner">
+    <div class="memoryHead reveal">
+      <div><div class="storyKicker"><b>Exhibit 03</b> · Things I remember</div><h2 class="storyTitle">The little<br>things.</h2></div>
+      <div class="memoryIntro">Not the big things. The tiny ones. The details you probably don't realize I remember.</div>
+    </div>
+    <div class="memoryGrid">
+      <article class="memoryTile reveal"><div class="memoryNum">01</div><div><div class="memoryLabel">Something I noticed</div><h3>The way you get defensive.</h3><p>The way you get defensive whenever you think I'm blaming you. Sometimes it gets cute, but I worry for you too — because I can see how much it affects you, and how it can suddenly feel like the whole world, or at least me, is against you. Even then, all I want is to be by your side every moment of the day.</p></div><div class="memoryMeta"><span>Observed</span><span>Still remembered</span></div></article>
+      <article class="memoryTile reveal"><div class="memoryNum">02</div><div><div class="memoryLabel">A little thing</div><h3>When you get tired.</h3><p>When you get tired but still have to do something or get going. Your face turns so cute and adorable that I just start melting and thinking I should pick you up, put you to bed, and cuddle you until you fall asleep.</p></div><div class="memoryMeta"><span>Artifact</span><span>Unreasonably important</span></div></article>
+      <article class="memoryTile reveal"><div class="memoryNum">03</div><div><div class="memoryLabel">One I keep</div><h3>When you opened up.</h3><p>That time you opened up about your scars and your past. I don't know if you remember, but we ended up talking for nights. I remember I was in Jaipur hunting for a place — we found one, and it was awful — but in that place, that situation, just being with you and talking to you made the whole moment cherishful and turned it into one of the best nights so far. That was the time I saw you as vulnerable yet so strong, sharing it all and letting it out. I wish I could have taken some of that weight from you.</p></div><div class="memoryMeta"><span>Memory</span><span>Kept safely</span></div></article>
+    </div>
+    <div class="storyQuote reveal" style="color:#f5f5f5;margin-top:55px">“You somehow became my favorite part of days that would otherwise be completely ordinary.”</div>
+  </div>
+</section>
+
+<section class="unknownSection" id="unknown">
+  <div class="unknownGrid">
+    <div class="reveal"><div class="storyKicker" style="color:#777"><b>Exhibit 04</b> · Private notes</div><h2 class="unknownTitle">The things<br>she doesn't know.</h2><p class="unknownIntro">Oh, I don't really know what to say here because I told you everything, didn't I? I don't think I've hidden anything I can think of. Still, I'll give it a shot. And while I'm writing this, I can already imagine you saying in your head, “I know that, baby,” hahaha — my smarty pants.</p></div>
+    <div class="unknownCards">
+      <article class="unknownCard reveal"><div class="tag">You probably don't know · 01</div><p>The way you giggle in your voice notes, or laugh out loud in some video with your friend, is one of those things I can never get enough of.</p></article>
+      <article class="unknownCard reveal"><div class="tag">You probably don't know · 02</div><p>Sometimes the random things you send me stay in my head for days — much longer than you probably realize.</p><button class="revealBtn" type="button" onclick="openPrivateNote('private02')">Read more →</button></article>
+      <article class="unknownCard reveal"><div class="tag">You probably don't know · 03</div><p>Even when things hurt and we were apart, I never really stopped looking for your name on my phone.</p><button class="revealBtn" type="button" onclick="openPrivateNote('private03')">Read more →</button></article>
+      <article class="unknownCard redCard reveal"><div class="tag">Private exhibit · 04</div><div><p>There are probably so many tiny things about you I've never told you I remember.</p><button class="revealBtn" onclick="document.getElementById('hiddenTruth').classList.toggle('show')">Open private note →</button><div class="hiddenLine" id="hiddenTruth">Not because I don't notice them. I just don't always know how to explain why something so small can mean so much to me.</div></div></article>
+    </div>
+  </div>
+</section>
+
+
+<div class="private-modal" id="privateModal" aria-hidden="true">
+  <div class="private-backdrop" onclick="closePrivateNote()"></div>
+  <div class="private-modal-box" role="dialog" aria-modal="true" aria-labelledby="privateModalTitle">
+    <button class="private-modal-close" type="button" aria-label="Close private note" onclick="closePrivateNote()">×</button>
+    <div class="private-modal-kicker">Exhibit 04 · Private note</div>
+    <h3 class="private-modal-title" id="privateModalTitle">A note I kept.</h3>
+    <div class="private-modal-rule"></div>
+    <p class="private-modal-body" id="privateModalBody"></p>
+  </div>
+</div>
+
+<section class="ordinarySection" id="ordinary">
+  <div class="ordinaryGrid">
+    <div class="reveal"><div class="storyKicker"><b>Exhibit 05</b> · Ordinary days</div><h2 class="ordinaryTitle">You became<br>part of the<br>ordinary.</h2></div>
+    <div class="reveal"><p class="ordinaryText">Nothing extraordinary had to happen. Just messages, random thoughts, voice notes, “what are you doing?”, “You don't love me?”, “You don't miss me anymore?”, and completely unnecessary conversations — literally just jibber-jabber — that somehow became my favorite parts of the day.</p><p class="ordinaryText">That's the strange part. You didn't need a huge moment to become important. You just kept appearing in enough small moments that eventually, the day felt different without you.</p><div class="artifactList"><div class="artifactLine"><time>11:43 PM</time><strong>Voice note received.</strong><span>Saved</span></div><div class="artifactLine"><time>02:17 PM</time><strong>Something random sent because it reminded me of you.</strong><span>Saved</span></div><div class="artifactLine"><time>08:06 PM</time><strong>“Are you awake?” — followed by a conversation that went too long.</strong><span>Saved</span></div><div class="artifactLine"><time>TODAY</time><strong>Still here. Still collecting.</strong><span>Ongoing</span></div></div></div>
+  </div>
+</section>
+
+<section class="hki" id="distance">
+  <div class="hkiVisual"><div class="orb one" id="orb1"></div><div class="orb two" id="orb2"></div><div class="hkiGrid"></div></div>
+  <div class="hkiContent reveal"><div class="hkiTiny">Exhibit 06 · Geography without borders</div><div class="hkiTitle">TWO<br><span class="outline">COUNTRIES.</span><br>ONE STORY.</div><div class="hkiNote">[ HER COUNTRY ] &nbsp; × &nbsp; [ MY COUNTRY ]<br><br>Different mornings. Different nights. Different streets. Different lives happening around us.<br><br>We haven't met yet. That is not a missing chapter. It is the chapter waiting to happen.</div><button class="hkiButton" onclick="document.getElementById('voices').scrollIntoView({behavior:'smooth'})">Go to the voice archive →</button></div>
+  <div class="hkiLabel">A living exhibit · 06</div><div class="hkiLabel right">Scroll / Move / Explore</div>
+</section>
+
+<section class="voice" id="voices">
+  <div class="voiceWrap">
+    <div class="voiceHead reveal"><div><div class="eyebrow">Exhibit 07 · Voice archive</div><div class="voiceTitle">HEAR<br>HER.</div></div><div class="voiceDesc">This is what the photographs can't capture. The pauses. The laugh. The sleepy notes. Add your real audio files below and these become actual playable artifacts.</div></div>
+    <div class="voiceCards">
+      <article class="vcard reveal"><div class="vtop"><span>Voice note 01</span><span>REPLACE TIME</span></div><div class="vquote">“A tiny piece of her day, saved in mine.”</div><div class="player"><button class="play" onclick="toggleAudio('audio1',this)">▶</button><div class="wave" data-bars="42"></div><div class="vtime">VOICE</div></div><audio id="audio1" preload="none"><source src="media/voice-note-01.mp3" type="audio/mpeg"></audio></article>
+      <article class="vcard reveal"><div class="vtop"><span>Voice note 02</span><span>REPLACE TIME</span></div><div class="vquote">“This is what distance sounds like — and somehow it still feels close.”</div><div class="player"><button class="play" onclick="toggleAudio('audio2',this)">▶</button><div class="wave" data-bars="42"></div><div class="vtime">VOICE</div></div><audio id="audio2" preload="none"><source src="media/voice-note-02.mp3" type="audio/mpeg"></audio></article>
+    </div>
+    <div class="uploadNote">EDIT HERE · Put your audio files in <b>media/</b> and change the two filenames above. You can also reuse the same audio file in both cards.</div>
+  </div>
+</section>
+
+<section class="appleSection reveal" id="not-yet">
+  <div class="appleInner">
+    <div class="appleKicker">Exhibit 08 · The unfinished collection</div>
+    <h2 class="appleBig">Some artifacts<br><span class="gradient">do not exist yet.</span></h2>
+    <p class="appleText">There are no first-date photographs here. No first walk. No first hug. Because we haven't met. Instead, this room keeps the empty frames for memories that are still waiting for us.</p>
+    <div class="futureGrid">
+      <div class="futureCard"><small>Future artifact · 001</small><strong>First meeting.</strong></div>
+      <div class="futureCard"><small>Future artifact · 002</small><strong>First photograph together.</strong></div>
+      <div class="futureCard"><small>Future artifact · 003</small><strong>“You're finally here.”</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="birthdaySection" id="birthday">
+  <div class="birthdayInner">
+    <div class="birthdayKicker reveal"><b>Exhibit 09</b> · The portrait room</div>
+    <div class="birthdayGallery reveal">
+      <div class="birthdayPhoto tall"><img src="media/birthday-01.jpg" alt="Portrait of her 01" onerror="this.parentElement.classList.add('missing')"></div>
+      <div class="birthdayPhoto"><img src="media/birthday-02.jpg" alt="Portrait of her 02" onerror="this.parentElement.classList.add('missing')"></div>
+      <div class="birthdayPhoto wide"><img src="media/birthday-03.jpg" alt="Portrait of her 03" onerror="this.parentElement.classList.add('missing')"></div>
+      <div class="birthdayPhoto"><img src="media/birthday-04.jpg" alt="Portrait of her 04" onerror="this.parentElement.classList.add('missing')"></div>
+      <div class="birthdayPhoto tall"><img src="media/birthday-05.jpg" alt="Portrait of her 05" onerror="this.parentElement.classList.add('missing')"></div>
+      <div class="birthdayPhoto wide"><img src="media/birthday-06.jpg" alt="Portrait of her 06" onerror="this.parentElement.classList.add('missing')"></div>
+    </div>
+    <button class="birthdayEnvelope reveal" type="button" onclick="openBirthdayLetter()" aria-label="Open the letter">
+      <span class="envelopeGlow"></span>
+      <span class="envelopeFlap"></span>
+      <span class="envelopeBody"></span>
+      <span class="envelopeSeal">♥</span>
+    </button>
+  </div>
+</section>
+
+<div class="birthday-modal" id="birthdayModal" aria-hidden="true">
+  <div class="birthday-modal-backdrop" onclick="closeBirthdayLetter()"></div>
+  <div class="birthday-letter" role="dialog" aria-modal="true" aria-labelledby="birthdayLetterTitle">
+    <button class="birthday-modal-close" type="button" aria-label="Close birthday letter" onclick="closeBirthdayLetter()">×</button>
+    <div class="birthday-letter-kicker">A letter from the museum · 09</div>
+    <h3 class="birthday-letter-title" id="birthdayLetterTitle">A letter,<br><span>for you.</span></h3>
+    <div class="birthday-letter-rule"></div>
+    <!-- WRITE YOUR BIRTHDAY MESSAGE HERE -->
+    <div class="birthday-letter-body" id="birthdayLetterBody">Your message goes here.</div>
+  </div>
+</div>
+
+<section class="final" id="final">
+  <div class="finalWrap reveal"><div class="finalKicker">Final exhibit · 10</div><div class="finalTitle">NOT THE<br><span class="red">END.</span></div><div class="finalText">There are places we haven't gone. Photos we haven't taken. Conversations we haven't had. Ordinary days we haven't shared in the same place.
+
+This museum is unfinished on purpose. It's just the current exhibition.</div><div class="finalMark">Happy Birthday, my love</div></div>
+</section>
+
+</main>
+
+<footer><span>The Museum of Us · Private Original</span><span>Made for one person · Never meant to be public</span></footer>
+
+<script>
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('preloader').classList.add('done');document.body.classList.add('ready')},1900)});
+const topbar=document.getElementById('topbar');
+window.addEventListener('scroll',()=>topbar.classList.toggle('solid',window.scrollY>80));
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})},{threshold:.13});
+document.querySelectorAll('.reveal').forEach(x=>observer.observe(x));
+const waveEls=[...document.querySelectorAll('.wave')];
+waveEls.forEach(w=>{const n=Number(w.dataset.bars||42);for(let i=0;i<n;i++){const s=document.createElement('span');const h=8+Math.round(Math.abs(Math.sin(i*1.78))*32);s.style.setProperty('--h',h+'px');w.appendChild(s)}});
+function toggleAudio(id,btn){const a=document.getElementById(id);if(!a)return;if(a.paused){document.querySelectorAll('audio').forEach(x=>{if(x!==a)x.pause()});a.play().catch(()=>{});btn.textContent='❚❚';}else{a.pause();btn.textContent='▶';}}
+document.querySelectorAll('audio').forEach(a=>a.addEventListener('ended',()=>{const b=a.parentElement.querySelector('.play');if(b)b.textContent='▶'}));
+
+function openBirthdayLetter(){
+  const modal=document.getElementById('birthdayModal');
+  if(!modal)return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.classList.add('modal-open');
+}
+function closeBirthdayLetter(){
+  const modal=document.getElementById('birthdayModal');
+  if(!modal)return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('modal-open');
+}
+
+const privateNotes={
+  private02:{title:'The random things you send me.',body:`Sometimes you send me something completely random, and I keep it in my head much longer than you probably realize — even for days.
+
+Maybe it's a picture that makes me think of your hair like a Japanese girl. Or that time you sent me something sexy. Or one of my favorite pictures of you making that tired face while sitting next to your roomie in the white top. Or the one where you were having ice cream with your roomie and your other friend.
+
+And honestly, there are so many more. Tiny things you probably sent without thinking twice that somehow stayed with me.`},
+  private03:{title:'What happened when we were apart.',body:`There were days when we broke up and I was trying to make up my mind. I wouldn't respond right away, sometimes for days, because the way we broke up hurt. I was trying to live through the pain and convince myself to hate you.
+
+But I couldn't. Not at all.
+
+Every time you texted — even after a few days of silence — I would check my phone a thousand times. And the second your name was there, I wanted to look right away and forget everything I had decided or told myself before.`}
+};
+function openPrivateNote(id){
+  const note=privateNotes[id], modal=document.getElementById('privateModal');
+  if(!note||!modal)return;
+  document.getElementById('privateModalTitle').textContent=note.title;
+  document.getElementById('privateModalBody').textContent=note.body;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.classList.add('modal-open');
+}
+function closePrivateNote(){
+  const modal=document.getElementById('privateModal');
+  if(!modal)return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('modal-open');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePrivateNote();closeBirthdayLetter()}});
+document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-.5),y=(e.clientY/window.innerHeight-.5);const a=document.getElementById('orb1'),b=document.getElementById('orb2');if(a)a.style.transform=`translate(${x*35}px,${y*25}px)`;if(b)b.style.transform=`translate(${x*-25}px,${y*-20}px) scale(.7)`});
+</script>
+</body>
+</html>
