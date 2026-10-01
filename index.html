@@ -1612,7 +1612,8 @@
       }
 
       .hkiTitle {
-        font-size: 24vw
+        font-size: 18vw;
+        letter-spacing: -.08em;
       }
 
       .hkiContent {
@@ -2526,35 +2527,64 @@
         line-height: 1.7
       }
     }
-html,
-body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
 
-main,
-section {
-  width: 100%;
-  max-width: 100%;
-}
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
 
-@media (max-width: 850px) {
-  .hki,
-  .voice {
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    overflow: hidden;
-  }
+    main,
+    section {
+      width: 100%;
+      max-width: 100%;
+    }
 
-  .hkiContent,
-  .voiceWrap {
-    width: 100%;
-    max-width: 100%;
-  }
-}
+    @media (max-width: 850px) {
+
+      .hki,
+      .voice {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        overflow: hidden;
+      }
+
+      .hkiContent,
+      .voiceWrap {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        overflow: hidden;
+      }
+    }
+
+    @media (max-width: 850px) {
+
+      .hkiContent,
+      .voiceWrap,
+      .voiceCards,
+      .vcard {
+        min-width: 0;
+      }
+
+      .voiceCards {
+        width: 100%;
+      }
+
+      .vcard {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .vcard * {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -3048,7 +3078,7 @@ section {
             <div class="vtop"><span>Voice note 01</span></div>
             <div class="vquote">“A tiny piece of her day, saved in mine.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio1',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio1" preload="none">
               <source src="media/day.mp3" type="audio/mpeg">
@@ -3058,7 +3088,7 @@ section {
             <div class="vtop"><span>Voice note 02</span></div>
             <div class="vquote">“This is what distance sounds like — and somehow it still feels close.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio2',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio2" preload="none">
               <source src="media/melt.mp3" type="audio/mpeg">
@@ -3068,7 +3098,7 @@ section {
             <div class="vtop"><span>Voice note 03</span></div>
             <div class="vquote">“My teacher.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio3',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio3" preload="none">
               <source src="media/teacher.mp3" type="audio/mpeg">
@@ -3078,7 +3108,7 @@ section {
             <div class="vtop"><span>Voice note 04</span></div>
             <div class="vquote">“My Chef.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio4',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio4" preload="none">
               <source src="media/chef.mp3" type="audio/mpeg">
@@ -3089,7 +3119,7 @@ section {
             <div class="vquote">“You have no idea how little it takes to make me happy. Sometimes, this alone is enough
               to make my whole day.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio5',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio5" preload="none">
               <source src="media/missyou.mp3" type="audio/mpeg">
@@ -3100,7 +3130,7 @@ section {
             <div class="vquote">“Knowing how much you trust me makes me feel ecstatic. It fills my heart with emotions I
               can hardly put into words, and it means more to me than you know. I’ll carry it in my heart always.”</div>
             <div class="player"><button class="play" onclick="toggleAudio('audio6',this)">▶</button>
-              <div class="wave" data-bars="42"></div>
+              <div class="wave" data-bars="30"></div>
               <div class="vtime">VOICE</div>
             </div><audio id="audio6" preload="none">
               <source src="media/permission.mp3" type="audio/mpeg">
@@ -3160,25 +3190,39 @@ section {
         <h3 class="birthday-letter-title" id="birthdayLetterTitle">A letter,<br><span>for you.</span></h3>
         <div class="birthday-letter-rule"></div>
         <!-- WRITE YOUR BIRTHDAY MESSAGE HERE -->
-        <div class="birthday-letter-body" id="birthdayLetterBody">In my whole life, I have always had this habit of looking for something more or something different. No matter what I had, whether it was where I was living, the things I was doing, the games I was playing, or just life in general, a part of me would always look at something else and wonder what it would be like to have that, to try that, or to experience something different.
+        <div class="birthday-letter-body" id="birthdayLetterBody">In my whole life, I have always had this habit of
+          looking for something more or something different. No matter what I had, whether it was where I was living,
+          the things I was doing, the games I was playing, or just life in general, a part of me would always look at
+          something else and wonder what it would be like to have that, to try that, or to experience something
+          different.
 
           But with you, somehow that search ended❤️.
 
-          For once, I didn't look somewhere else and wonder if there was something better. I never thought about wanting someone different or wished you were different in any way. There were no second guesses about you, no doubts, no feeling that maybe I should look for something else. I just wanted you🫶.
+          For once, I didn't look somewhere else and wonder if there was something better. I never thought about wanting
+          someone different or wished you were different in any way. There were no second guesses about you, no doubts,
+          no feeling that maybe I should look for something else. I just wanted you🫶.
 
           And that's something I don't think I have ever felt before.
 
-          You are just so perfect the way you are for me. The way you smile. The way you giggle. The way you make faces🥹, and so many other little things about you.
+          You are just so perfect the way you are for me. The way you smile. The way you giggle. The way you make
+          faces🥹, and so many other little things about you.
 
-          And I want to experience so many things, want so many things with you. But I don't know how far we will be able to. Will it be able to work out? When will we be able to stay in the same place🌎❤️?
+          And I want to experience so many things, want so many things with you. But I don't know how far we will be
+          able to. Will it be able to work out? When will we be able to stay in the same place🌎❤️?
 
-          Beside all that, I wish the very best for you. Wish you all the good luck there is for your future. I want you to be happy and have all the success you desire in life✨.
+          Beside all that, I wish the very best for you. Wish you all the good luck there is for your future. I want you
+          to be happy and have all the success you desire in life✨.
 
-          I know people say there is always sorrow that comes with happiness, and nothing can be forever. But I want most of the time for you to be happy and healthy. There can be a little bit of sorrow, sad times, but I'm hoping they won't last long. And I also heard that without sad times or sorrow, we won't be able to appreciate happiness that much. So it's good in a way.
+          I know people say there is always sorrow that comes with happiness, and nothing can be forever. But I want
+          most of the time for you to be happy and healthy. There can be a little bit of sorrow, sad times, but I'm
+          hoping they won't last long. And I also heard that without sad times or sorrow, we won't be able to appreciate
+          happiness that much. So it's good in a way.
 
-          So I want all the rollercoaster ride🎢. I don't wish for you to be happy always, but I want the trajectory to be mostly happy times for you.
+          So I want all the rollercoaster ride🎢. I don't wish for you to be happy always, but I want the trajectory to
+          be mostly happy times for you.
 
-          Regardless of how far or how long we go, I don't have more words to tell you or express how much you mean to me or how much I love you❤️.
+          Regardless of how far or how long we go, I don't have more words to tell you or express how much you mean to
+          me or how much I love you❤️.
 
           So, wish you a Happy Birthday🎂 and colorful, happening years ahead🌈✨.</div>
       </div>
@@ -3208,7 +3252,7 @@ section {
     const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show') }) }, { threshold: .13 });
     document.querySelectorAll('.reveal').forEach(x => observer.observe(x));
     const waveEls = [...document.querySelectorAll('.wave')];
-    waveEls.forEach(w => { const n = Number(w.dataset.bars || 42); for (let i = 0; i < n; i++) { const s = document.createElement('span'); const h = 8 + Math.round(Math.abs(Math.sin(i * 1.78)) * 32); s.style.setProperty('--h', h + 'px'); w.appendChild(s) } });
+    waveEls.forEach(w => { const n = Number(w.dataset.bars || 30); for (let i = 0; i < n; i++) { const s = document.createElement('span'); const h = 8 + Math.round(Math.abs(Math.sin(i * 1.78)) * 32); s.style.setProperty('--h', h + 'px'); w.appendChild(s) } });
     function toggleAudio(id, btn) { const a = document.getElementById(id); if (!a) return; if (a.paused) { document.querySelectorAll('audio').forEach(x => { if (x !== a) x.pause() }); a.play().catch(() => { }); btn.textContent = '❚❚'; } else { a.pause(); btn.textContent = '▶'; } }
     document.querySelectorAll('audio').forEach(a => a.addEventListener('ended', () => { const b = a.parentElement.querySelector('.play'); if (b) b.textContent = '▶' }));
 
